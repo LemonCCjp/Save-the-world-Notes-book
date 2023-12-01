@@ -2,68 +2,29 @@
 
 QueryProfileに載っていない、アカウントのF.O.R.T.値を算出する方法。
 
-## 1. リサーチ。コマンダーレベル。サバイバースクワッド。の3つの情報を取得して対応・計算する。
+## 1. サバイバースクワッドとその他の情報を取得して計算する。
 
-まず、リサーチレベルを取得する必要があります。
+まず、リサーチとコマンダーレベル両方のF.O.R.T.値の合計のデータがあるのでそれを取得します。
 
-以下のコードでリサーチレベルから各F.O.R.T.値に対応させます。
+以下のコードで取得できます。
 
 (dataは取得したQueryProfileです。)
 
 ```python
-#　クソコードでごめんなさい
-
-# リサーチレベルごとの得られるF.O.R.T.値の辞書
-research_fort = {'1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 17, '11': 18, '12': 19, '13': 20, '14': 21, '15': 22, '16': 23, '17': 24, '18': 25, '19': 26, '20': 38, '21': 39, '22': 40, '23': 41, '24': 42, '25': 43, '26': 44, '27': 45, '28': 46, '29': 47, '30': 65, '31': 66, '32': 67, '33': 68, '34': 69, '35': 70, '36': 71, '37': 72, '38': 73, '39': 74, '40': 100, '41': 101, '42': 102, '43': 103, '44': 104, '45': 105, '46': 106, '47': 107, '48': 108, '49': 109, '50': 143, '51': 144, '52': 145, '53': 146, '54': 147, '55': 148, '56': 149, '57': 150, '58': 151, '59': 152, '60': 192, '61': 193, '62': 194, '63': 195, '64': 196, '65': 197, '66': 198, '67': 199, '68': 200, '69': 201, '70': 247, '71': 248, '72': 249, '73': 250, '74': 251, '75': 252, '76': 253, '77': 254, '78': 255, '79': 256, '80': 308, '81': 309, '82': 310, '83': 311, '84': 312, '85': 313, '86': 314, '87': 315, '88': 316, '89': 317, '90': 375, '91': 376, '92': 377, '93': 378, '94': 379, '95': 380, '96': 381, '97': 382, '98': 383, '99': 384, '100': 446, '101': 447, '102': 448, '103': 449, '104': 450, '105': 451, '106': 452, '107': 453, '108': 454, '109': 455, '110': 521, '111': 522, '112': 523, '113': 524, '114': 525, '115': 526, '116': 527, '117': 528, '118': 529, '119': 530, '120': 600}
-
-# ここでリサーチレベルを取得します。　
-research_levels = data["profileChanges"][0]["profile"]["stats"]["attributes"]["research_levels"]
-
 # F.O.R.T.値の初期化
 fort = {"fortitude": 0, "offense": 0, "resistance": 0, "technology": 0}
 
-# 取得したレベルに対応したF.O.R.T.値がfortに加算されます。
-for k, v in research_levels.items():
-  fort[k] += research_fort[str(v)]
-
-```
-
-次に、コマンダーレベルに応じたF.O.R.T.値を対応させてfortに加算します。
-
-```python
-# こっちもめっちゃコード汚いです。
-
-# コマンダーレベルごとの得られるF.O.R.T.値の辞書
-commander_level_fort = {"2": {"fortitude": 3, "offense": 0, "resistance": 0, "technology": 0}, "3": {"fortitude": 3, "offense": 3, "resistance": 0, "technology": 0}, "4": {"fortitude": 3, "offense": 3, "resistance": 3, "technology": 0}, "5": {"fortitude": 3, "offense": 3, "resistance": 3, "technology": 3}, "11": {"fortitude": 6, "offense": 3, "resistance": 3, "technology": 3}, "12": {"fortitude": 6, "offense": 6, "resistance": 3, "technology": 3}, "13": {"fortitude": 6, "offense": 6, "resistance": 6, "technology": 3}, "14": {"fortitude": 6, "offense": 6, "resistance": 6, "technology": 6}, "21": {"fortitude": 9, "offense": 6, "resistance": 6, "technology": 6}, "22": {"fortitude": 9, "offense": 9, "resistance": 6, "technology": 6}, "23": {"fortitude": 9, "offense": 9, "resistance": 9, "technology": 6}, "24": {"fortitude": 9, "offense": 9, "resistance": 9, "technology": 9}, "31": {"fortitude": 13, "offense": 9, "resistance": 9, "technology": 9}, "32": {"fortitude": 13, "offense": 13, "resistance": 9, "technology": 9}, "33": {"fortitude": 13, "offense": 13, "resistance": 13, "technology": 9}, "34": {"fortitude": 13, "offense": 13, "resistance": 13, "technology": 13}, "41": {"fortitude": 17, "offense": 13, "resistance": 13, "technology": 13}, "42": {"fortitude": 17, "offense": 17, "resistance": 13, "technology": 13}, "43": {"fortitude": 17, "offense": 17, "resistance": 17, "technology": 13}, "44": {"fortitude": 17, "offense": 17, "resistance": 17, "technology": 17}, "56": {"fortitude": 21, "offense": 17, "resistance": 17, "technology": 17}, "57": {"fortitude": 21, "offense": 21, "resistance": 17, "technology": 17}, "58": {"fortitude": 21, "offense": 21, "resistance": 21, "technology": 17}, "59": {"fortitude": 21, "offense": 21, "resistance": 21, "technology": 21}, "61": {"fortitude": 26, "offense": 21, "resistance": 21, "technology": 21}, "62": {"fortitude": 26, "offense": 26, "resistance": 21, "technology": 21}, "63": {"fortitude": 26, "offense": 26, "resistance": 26, "technology": 21}, "64": {"fortitude": 26, "offense": 26, "resistance": 26, "technology": 26}, "71": {"fortitude": 31, "offense": 26, "resistance": 26, "technology": 26}, "72": {"fortitude": 31, "offense": 31, "resistance": 26, "technology": 26}, "73": {"fortitude": 31, "offense": 31, "resistance": 31, "technology": 26}, "74": {"fortitude": 31, "offense": 31, "resistance": 31, "technology": 31}, "86": {"fortitude": 37, "offense": 31, "resistance": 31, "technology": 31}, "87": {"fortitude": 37, "offense": 37, "resistance": 31, "technology": 31}, "88": {"fortitude": 37, "offense": 37, "resistance": 37, "technology": 31}, "89": {"fortitude": 37, "offense": 37, "resistance": 37, "technology": 37}, "96": {"fortitude": 43, "offense": 37, "resistance": 37, "technology": 37}, "97": {"fortitude": 43, "offense": 43, "resistance": 37, "technology": 37}, "98": {"fortitude": 43, "offense": 43, "resistance": 43, "technology": 37}, "99": {"fortitude": 43, "offense": 43, "resistance": 43, "technology": 43}, "106": {"fortitude": 50, "offense": 43, "resistance": 43, "technology": 43}, "107": {"fortitude": 50, "offense": 50, "resistance": 43, "technology": 43}, "108": {"fortitude": 50, "offense": 50, "resistance": 50, "technology": 43}, "109": {"fortitude": 50, "offense": 50, "resistance": 50, "technology": 50}, "121": {"fortitude": 57, "offense": 50, "resistance": 50, "technology": 50}, "122": {"fortitude": 57, "offense": 57, "resistance": 50, "technology": 50}, "123": {"fortitude": 57, "offense": 57, "resistance": 57, "technology": 50}, "124": {"fortitude": 57, "offense": 57, "resistance": 57, "technology": 57}, "131": {"fortitude": 118, "offense": 108, "resistance": 108, "technology": 108}, "132": {"fortitude": 118, "offense": 118, "resistance": 108, "technology": 108}, "133": {"fortitude": 118, "offense": 118, "resistance": 118, "technology": 108}, "134": {"fortitude": 118, "offense": 118, "resistance": 118, "technology": 118}, "141": {"fortitude": 72, "offense": 64, "resistance": 64, "technology": 64}, "142": {"fortitude": 72, "offense": 72, "resistance": 64, "technology": 64}, "143": {"fortitude": 72, "offense": 72, "resistance": 72, "technology": 64}, "144": {"fortitude": 72, "offense": 72, "resistance": 72, "technology": 72}, "156": {"fortitude": 80, "offense": 72, "resistance": 72, "technology": 72}, "157": {"fortitude": 80, "offense": 80, "resistance": 72, "technology": 72}, "158": {"fortitude": 80, "offense": 80, "resistance": 80, "technology": 72}, "159": {"fortitude": 80, "offense": 80, "resistance": 80, "technology": 80}, "176": {"fortitude": 89, "offense": 80, "resistance": 80, "technology": 80}, "177": {"fortitude": 89, "offense": 89, "resistance": 80, "technology": 80}, "178": {"fortitude": 89, "offense": 89, "resistance": 89, "technology": 80}, "179": {"fortitude": 89, "offense": 89, "resistance": 89, "technology": 89}, "196": {"fortitude": 98, "offense": 89, "resistance": 89, "technology": 89}, "197": {"fortitude": 98, "offense": 98, "resistance": 89, "technology": 89}, "198": {"fortitude": 98, "offense": 98, "resistance": 98, "technology": 89}, "199": {"fortitude": 98, "offense": 98, "resistance": 98, "technology": 98}, "221": {"fortitude": 108, "offense": 98, "resistance": 98, "technology": 98}, "222": {"fortitude": 108, "offense": 108, "resistance": 98, "technology": 98}, "223": {"fortitude": 108, "offense": 108, "resistance": 108, "technology": 98}, "224": {"fortitude": 108, "offense": 108, "resistance": 108, "technology": 108}, "241": {"fortitude": 128, "offense": 118, "resistance": 118, "technology": 118}, "242": {"fortitude": 128, "offense": 128, "resistance": 118, "technology": 118}, "243": {"fortitude": 128, "offense": 128, "resistance": 128, "technology": 118}, "244": {"fortitude": 128, "offense": 128, "resistance": 128, "technology": 128}, "256": {"fortitude": 139, "offense": 128, "resistance": 128, "technology": 128}, "257": {"fortitude": 139, "offense": 139, "resistance": 128, "technology": 128}, "258": {"fortitude": 139, "offense": 139, "resistance": 139, "technology": 128}, "259": {"fortitude": 139, "offense": 139, "resistance": 139, "technology": 139}, "271": {"fortitude": 151, "offense": 139, "resistance": 139, "technology": 139}, "272": {"fortitude": 151, "offense": 151, "resistance": 139, "technology": 139}, "273": {"fortitude": 151, "offense": 151, "resistance": 151, "technology": 139}, "274": {"fortitude": 151, "offense": 151, "resistance": 151, "technology": 151}, "291": {"fortitude": 164, "offense": 151, "resistance": 151, "technology": 151}, "292": {"fortitude": 164, "offense": 164, "resistance": 151, "technology": 151}, "293": {"fortitude": 164, "offense": 164, "resistance": 164, "technology": 151}, "294": {"fortitude": 164, "offense": 164, "resistance": 164, "technology": 164}}
-
-#　ここでコマンダーレベルを取得します。
-commander_level = int(data["profileChanges"][0]["profile"]["stats"]["attributes"]["level"])
-
-# その時点のレベルで何レベル～何レベルまでの間に当てはまるかを調べて、当てはまったところのF.O.R.T.値をfortに加算する。
-last_level = 0
-for tmp_cl, l_for_fort in commander_level_fort.items():
-  key_list = list(commander_level_fort.keys())
-  index = int(key_list.index(tmp_cl))
-  if index == 87:
-    next_level = 295
-  else:
-    next_level = int(key_list[index +1])
-  
-  if commander_level >= 295:
-    clr = commander_level_fort["294"]
-    break
-  elif tmp_cl == commander_level:
-   clr =  l_for_fort
-   break
-  elif last_level < commander_level < next_level:
-    clr =  commander_level_fort[str(last_level)]
-    break
-  else:
-    last_level = int(tmp_cl)
-  
-for forty, value in clr.items():
-  fort[forty] = fort[forty] +value
-
+for k, v in items.items():
+      templateId = v["templateId"]
+      if "Stat:" in templateId and "phoenix" not in templateId:
+        if "fortitude" in templateId:
+          fort["fortitude"] += v["quantity"]
+        elif "offense" in templateId:
+          fort["offense"] += v["quantity"]
+        elif "resistance" in templateId:
+          fort["resistance"] += v["quantity"]
+        elif "technology" in templateId:
+          fort["technology"] += v["quantity"]
 ```
 
 次は、サバイバースクワッドに配置した時のサバイバーのパワーの合計を調べる必要があります。
@@ -205,4 +166,4 @@ for squad_name, squad in survivor_squad.items():
   fort[fort_mapping] = fort[fort_mapping] + squad_points + leader_points
 ```
 
-以上3つのコードで加算されていった最終的なfortがF.O.R.T.値になります。
+以上2つのコードで加算されていった最終的なfortがF.O.R.T.値になります。
